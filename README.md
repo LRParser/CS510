@@ -5,7 +5,12 @@
 
 This is the repo for our CS510 project group, focused on applications of AI to the drug discovery process
 
+## Brief Proposal
+
+Our proposal is to look at novel applications of artificial intelligence in the process of drug discovery, looking specifically at repurposing of existing drugs for new indications and at the degree to which the application of novel deep learning and reinforcement learning techniques (such as graph convolutions and meta-learning/multi-task learning). We will use PubChem BioAssay as our primary dataset and MoleculeNet as our primary benchmark
+
 ## Relevant articles
+0) MoleculeNet: A benchmark for molecular machine learning - https://arxiv.org/abs/1703.00564
 
 1) Meta-QSAR: a large-scale application of meta-learning to drug design and discovery  - https://arxiv.org/abs/1709.03854
 
@@ -34,4 +39,10 @@ at: https://ebookcentral-proquest-com.ezproxy2.library.drexel.edu/lib/drexel-ebo
 2) Semantic breakthrough in drug discovery
 
 at: http://www.morganclaypool.com.ezproxy2.library.drexel.edu/doi/pdf/10.2200/S00600ED1V01Y201409WEB009
+
+
+### Other potentially relevant articles
+
+1) Large-scale detection of drug off-targets - https://bmcpharmacoltoxicol-biomedcentral-com.ezproxy2.library.drexel.edu/articles/10.1186/s40360-017-0128-7#CR2
+
 
