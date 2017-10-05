@@ -17,3 +17,14 @@ The authors note QSAR learning is one of the most important and established appl
 2) Learning Graph-Level Representation for Drug Discovery - https://arxiv.org/pdf/1709.03741.pdf
 3) Generating Focussed Molecule Libraries for Drug Discovery with Recurrent Neural Networks - https://arxiv.org/pdf/1701.01329
 4) Low Data Drug Discovery with One-shot Learning - https://arxiv.org/pdf/1611.03199
+
+## Background Reading
+
+1) Drug discovery: Practices, Processes and Perspectives
+
+at: https://ebookcentral-proquest-com.ezproxy2.library.drexel.edu/lib/drexel-ebooks/detail.action?docID=1166776
+
+2) Semantic breakthrough in drug discovery
+
+at: http://www.morganclaypool.com.ezproxy2.library.drexel.edu/doi/pdf/10.2200/S00600ED1V01Y201409WEB009
+
