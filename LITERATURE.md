@@ -1,4 +1,3 @@
-
 # CS510
 
 ## Overview
@@ -11,6 +10,8 @@ Our proposal is to look at novel applications of artificial intelligence in the 
 
 ## Relevant articles
 0) MoleculeNet: A benchmark for molecular machine learning - https://arxiv.org/abs/1703.00564
+
+Summary is that the PCBA benchmark will be useful for us.
 
 1) Meta-QSAR: a large-scale application of meta-learning to drug design and discovery  - https://arxiv.org/abs/1709.03854
 
@@ -40,9 +41,17 @@ at: https://ebookcentral-proquest-com.ezproxy2.library.drexel.edu/lib/drexel-ebo
 
 at: http://www.morganclaypool.com.ezproxy2.library.drexel.edu/doi/pdf/10.2200/S00600ED1V01Y201409WEB009
 
+Summary: Chem2Bio2RDF is a large RDF based database.
 
-### Other potentially relevant articles
+For PubChem there is a specific RDF download
 
-1) Large-scale detection of drug off-targets - https://bmcpharmacoltoxicol-biomedcentral-com.ezproxy2.library.drexel.edu/articles/10.1186/s40360-017-0128-7#CR2
+3)  https://pubchem.ncbi.nlm.nih.gov/rdf/
 
 
+2) ChemTS: An Efficient Python Library for de novo Molecular Generation - https://arxiv.org/pdf/1710.00616.pdf
+
+Uses Monte Carlo Tree Search
+
+3) Learning to Plan Chemical Synthesis - https://arxiv.org/abs/1708.04202
+
+Also uses MCTS, "These deep neural networks were trained on 12 million reactions, which represents essentially all reactions ever published in organic chemistry"
