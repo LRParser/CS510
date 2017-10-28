@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from rdkit import Chem
 import pickle
-
+import time
 
 def main() :
     print("Test")
@@ -14,6 +14,7 @@ def main() :
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
+            start = time.time()
             filepath = os.path.join(sdf_root_path,filename)
             suppl = Chem.SDMolSupplier(filepath)
             for mol in suppl:
@@ -21,9 +22,10 @@ def main() :
                 cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
                 smiles = mol.GetProp("PUBCHEM_OPENEYE_ISO_SMILES")
                 cid_smiles_map[cid] = smiles
+            end = time.time()
+            print("Processed file number: {0} in {1} seconds".format(i, end - start))
             i = i + 1
-            if i % 50 == 0 :
-                print("Processed file number: {0}".format(i))
+
 
     print("Done mapping CIDs to smiles, storing as pickle")
 
