@@ -8,4 +8,6 @@ conda install -y -c glemaitre imbalanced-learn
 conda install -y -c conda-forge keras
 conda install -y -c anaconda tensorflow-gpu
 conda install -y nb_conda
+conda install -y -q -c conda-forge keras
+
 ipython kernel install --prefix=~/anaconda3
