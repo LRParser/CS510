@@ -28,8 +28,8 @@ def main() :
             print("Processed file number: {0} in {1} seconds".format(i, end - start))
             i = i + 1
 
-            df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values})
-            df.to_csv(os.path.join("~/CS510/data/",filename.replace(".csv","_smiles.csv")))
+            df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values},index=keys)
+            df.to_csv(os.path.join("~/CS510/data/",filename.replace(".sdf","_smiles.csv")),index=False)
 
 
     print("Done mapping CIDs to smiles, storing as pickle")
