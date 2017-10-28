@@ -22,3 +22,5 @@ To get compounds used in assay 1032, do
 ```
 cat /media/data/pubchem/Data/0001001_0002000/1032.csv | cut -d, -f3 > CIDS_ASSAY_1032.csv
 ```
+
+This file can be uploaded to (PubChem)[https://pubchem.ncbi.nlm.nih.gov/pc_fetch/pc_fetch.cgi]
