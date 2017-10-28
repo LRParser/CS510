@@ -9,8 +9,9 @@ def main() :
     print("Test")
 
     sdf_root_path = "/media/data/pubchem/SDF"
-    cid_smiles_map = dict()
     i = 0
+    keys = list()
+    values = list()
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
@@ -21,13 +22,19 @@ def main() :
                 if mol is None: continue
                 cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
                 smiles = mol.GetProp("PUBCHEM_OPENEYE_ISO_SMILES")
-                cid_smiles_map[cid] = smiles
+                keys.append(cid)
+                values.append(smiles)
             end = time.time()
             print("Processed file number: {0} in {1} seconds".format(i, end - start))
             i = i + 1
 
+            df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values})
+            df.to_csv(os.path.join("~/CS510/data/",filename.replace(".csv","_smiles.csv")))
+
 
     print("Done mapping CIDs to smiles, storing as pickle")
+
+    cid_smiles_map = dict(zip(keys,values))
 
     with open("cid_map.pickle","wb") as f:
         pickle.dump(cid_smiles_map,f,protocol=pickle.HIGHEST_PROTOCOL)
