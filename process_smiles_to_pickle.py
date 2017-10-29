@@ -9,7 +9,7 @@ import gzip
 def main() :
     print("Processing PubChem FTP Download")
 
-    sdf_root_path = "/media/data/pubchem/SDF"
+    sdf_root_path = "~/media/data/pubchem/SDF"
     i = 0
 
     all_keys = list()
@@ -18,7 +18,7 @@ def main() :
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
-            new_file_name = os.path.join("/media/data/pubchem/smiles/",filename.replace(".sdf.gz","_smiles.csv"))
+            new_file_name = os.path.join("~/media/data/pubchem/smiles/",filename.replace(".sdf.gz","_smiles.csv"))
 
             if os.path.exists(new_file_name) :
                 continue
@@ -49,7 +49,7 @@ def main() :
 
     print("Done mapping CIDs to smiles, storing as pickle")
 
-    with open("cid_map.pickle","wb") as f:
+    with open("~/media/data/pubchem/cid_map.pickle","wb") as f:
         pickle.dump((all_keys,all_values),f,protocol=pickle.HIGHEST_PROTOCOL)
 
     print("Stored data as pickle")

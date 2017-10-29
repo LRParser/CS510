@@ -7,7 +7,7 @@ def main() :
     ftp.login("anonymous", "anonymous")
     ftp.cwd("/pubchem/Compound/CURRENT-Full/SDF")
     try :
-        os.mkdir("SDF")
+        os.mkdirs("~/media/data/pubchem/SDF")
     except :
         print("Directory SDF already exists")
 
