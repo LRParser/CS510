@@ -18,9 +18,6 @@ def main() :
 
     i = 0
 
-    all_keys = list()
-    all_values = list()
-
     processed_files = os.listdir(results_path)
 
     for path, dirs, filenames in os.walk(sdf_root_path) :
@@ -94,7 +91,7 @@ def main() :
     print("Writing out summary CSV")
     df_full.to_csv("/media/data/pubchem/summary.csv",index=False)
 
-    print("Stored data as pickle")
+    print("Stored data as CSV")
     print("Done")
 
 if __name__ == '__main__':
