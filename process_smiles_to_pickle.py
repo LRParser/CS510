@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 from rdkit import Chem
-import pickle
 import time
 import gzip
 
@@ -17,22 +16,18 @@ def main() :
         print("Results directory already exists")
 
     i = 0
+    max_smiles_len = 80
 
     processed_files = os.listdir(results_path)
 
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
-            expected_file_name = None
-            use_gzip = False
             print("Processing: {0}".format(filename))
-            if ".gz" in filename :
-                use_gzip = True
-                expected_file_name = filename.replace(".sdf.gz", "_smiles.csv")
-                new_file_name = os.path.join(results_path,expected_file_name)
-            else :
-                expected_file_name = filename.replace(".sdf","_smiles.csv")
-                new_file_name = os.path.join(results_path,expected_file_name)
+
+            expected_file_name = filename.replace(".sdf.gz", "_smiles.csv")
+            new_file_name = os.path.join(results_path,expected_file_name)
+
 
             if expected_file_name in processed_files:
                 print("Skipping: {0}".format(new_file_name))
@@ -45,36 +40,26 @@ def main() :
             start = time.time()
             filepath = os.path.join(sdf_root_path,filename)
 
-            if use_gzip :
-                with gzip.open(filepath,'rb') as myfile:
-                    suppl = Chem.ForwardSDMolSupplier(myfile)
-                    for mol in suppl:
-                        if mol is None: continue
-                        cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
-                        smiles = mol.GetProp("PUBCHEM_OPENEYE_ISO_SMILES")
-                        keys.append(cid)
-                        values.append(smiles)
-                    end = time.time()
-                    print("Processed file number: {0} in {1} seconds".format(i, end - start))
-                    i = i + 1
-
-                    df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values},index=keys)
-                    df.to_csv(new_file_name,index=False)
-            else :
-                print("No gzip")
-                suppl = Chem.ForwardSDMolSupplier(filepath)
+            with gzip.open(filepath,'rb') as myfile:
+                suppl = Chem.ForwardSDMolSupplier(myfile)
                 for mol in suppl:
                     if mol is None: continue
                     cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
                     smiles = mol.GetProp("PUBCHEM_OPENEYE_ISO_SMILES")
-                    keys.append(cid)
+                    if len(smiles) > max_smiles_len:
+                        i = i + 1
+                        print("Skipped compound: {0} due to large size".format(cid))
+                        continue
+                    keys.append(int(cid))
                     values.append(smiles)
                 end = time.time()
+
                 print("Processed file number: {0} in {1} seconds".format(i, end - start))
                 i = i + 1
 
-                df = pd.DataFrame({"PUBCHEM_CID": keys, "SMILES": values}, index=keys)
-                df.to_csv(new_file_name, index=False)
+                df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values},index=keys)
+                df.to_csv(new_file_name,index=False)
+
 
 
     # Now parse all results smile files into one big file
