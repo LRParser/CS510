@@ -12,7 +12,7 @@ def main() :
         print("Directory SDF already exists")
 
     filelist = ftp.nlst()
-    existingfiles = os.listdir("/media/data/pubchem/SDF")
+    existingfiles = os.listdir("/media/data/pubchem/SDF/")
     print("Downloading: {0} files".format(len(filelist)))
     i = 0
     for filename in filelist:
