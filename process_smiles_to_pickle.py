@@ -85,7 +85,7 @@ def main() :
     processed_files = os.listdir(results_path)
     for filename in processed_files :
         print("Processing: {} for summary CSV".format(filename))
-        df = pd.read_csv(filename)
+        df = pd.read_csv(os.path.join(results_path,filename))
         df_list.append(df)
 
     df_full = pd.concat(df_list)
