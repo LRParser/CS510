@@ -18,7 +18,7 @@ def main() :
     for filename in filelist:
 
         local_filename = os.path.join('/media/data/pubchem/SDF', filename)
-        if filename in existingfiles:
+        if filename in existingfiles or "README" in filename:
             i = i + 1
             continue
 

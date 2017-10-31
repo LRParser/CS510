@@ -16,7 +16,7 @@ def main() :
         print("Results directory already exists")
 
     i = 0
-    max_smiles_len = 80
+    max_smiles_len = 200
 
     processed_files = os.listdir(results_path)
 
