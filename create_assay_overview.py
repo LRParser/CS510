@@ -8,11 +8,15 @@ import time
 def main():
     print("Loading data from pickle")
 
-    with open("cid_map.pickle","rb") as f:
-        (keys, values) = pickle.load(f)
+    #with open("cid_map.pickle","rb") as f:
+    #    (keys, values) = pickle.load(f)
+
+    pd.read_csv("/media/data/pubchem/summary.csv")
+
 
     root_path = "/media/data/pubchem/Data"
     root_df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values})
+    df_list = list()
 
     for path, dirs, filenames in os.walk(root_path) :
         for dir in dirs:
@@ -35,21 +39,25 @@ def main():
 
                     cid_series = df["PUBCHEM_CID"].astype(int)
                     outcome_series = df["ACTIVITY_OUTCOME"]
-                    smiles_series = list()
-                    for cid in cid_series:
-                        smile = values[keys.index(cid)]
-
-                        smiles_series.append(smile)
+                    #smiles_series = list()
+                    #for cid in cid_series:
+                    #    smile = values[keys.index(cid)]
+                    #    smiles_series.append(smile)
 
                     assay_name = filename.replace(".csv","")
                     parsed_df = pd.DataFrame({"PUBCHEM_CID" : cid_series, assay_name : outcome_series, "SMILES" : smiles_series})
 
-
+                    df_list.append(parsed_df)
                     print(assay_name)
 
                     print("Count of parsed: {0}".format(parsed_df.count()))
-                    root_df = root_df.merge(parsed_df,on="PUBCHEM_CID")
-                    print("Count of master: {0}".format(root_df.count()))
+
+
+    # Now parse all results smile files into one big file
+
+
+
+    df_full = pd.concat(df_list)
 
     root_df.to_csv("/media/data/pubchem/pcba_full.csv")
 
