@@ -19,6 +19,7 @@ def main() :
     max_smiles_len = 200
 
     processed_files = os.listdir(results_path)
+    processed_files.add("Compound_102125001_102150000_smiles.csv")
 
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
