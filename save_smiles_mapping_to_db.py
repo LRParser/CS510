@@ -10,7 +10,7 @@ con = psycopg2.connect("")
 #
 
 cur = con.cursor()
-cur.execute("CREATE TABLE IF NOT EXISTS pubchem ( PUBCHEM_CID bigint PRIMARY KEY, SMILES varchar (2000) NOT NULL);")
+cur.execute("CREATE TABLE IF NOT EXISTS pubchem ( PUBCHEM_CID bigint PRIMARY KEY, SMILES varchar (200) NOT NULL);")
 cur.execute("COPY pubchem FROM '/media/data/pubchem/summary.csv' delimiter ',' csv header;")
 con.commit()
 cur.close()
