@@ -24,3 +24,14 @@ cat /media/data/pubchem/Data/0001001_0002000/1032.csv | cut -d, -f3 > CIDS_ASSAY
 ```
 
 This file can be uploaded to (PubChem)[https://pubchem.ncbi.nlm.nih.gov/pc_fetch/pc_fetch.cgi]
+
+TODO:
+
+Explore graph conv and word2vec derived fingerprints
+
+Graph conv:
+https://arxiv.org/abs/1603.00856
+
+mol2vec fingerprints:
+https://chemrxiv.org/articles/Mol2vec_Unsupervised_Machine_Learning_Approach_with_Chemical_Intuition/5513581
+
