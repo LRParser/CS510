@@ -2,36 +2,38 @@ import rdkit
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 import pandas as pd
-
-import gensim, logging
+import gzip
+import os
 
 def main() :
-    suppl = Chem.SDMolSupplier("Compound_000025001_000050000.sdf")
-    all_keys = list()
 
+    sdf_root_path = "/media/data/pubchem/SDF"
 
-    for mol in suppl:
+    for path, dirs, filenames in os.walk(sdf_root_path) :
+        for filename in filenames:
+            filepath = os.path.join(sdf_root_path, filename)
 
-        if not mol:
-            continue
+            if "Compound_102125001_102150000" in filename:
+                continue
 
-        info = {}
-        rdMolDescriptors.GetMorganFingerprint(mol,1,bitInfo=info)
-        keys = info.keys()
-        keys_string = list()
-        keys_list = list(keys)
-        for k in keys_list:
-            print(k,end=' ')
-            #keys_string.append(str(k))
-        print()
-        all_keys.append(keys_string)
+            with gzip.open(filepath, 'rb') as myfile:
+                suppl = Chem.ForwardSDMolSupplier(myfile)
 
-    #dictionary = corpora.Dictionary(texts)
-    #corpus = [dictionary.doc2bow(text) for text in keys_string]
-    #model = gensim.models.Word2Vec(keys_string, min_count=1)
-    #model.build_vocab(keys_string)
-    #print(model.wv["2246728737"])
+                for mol in suppl:
 
+                    if not mol:
+                        continue
+
+                    try :
+                        info = {}
+                        rdMolDescriptors.GetMorganFingerprint(mol,1,bitInfo=info)
+                        keys = info.keys()
+                        keys_list = list(keys)
+                        for k in keys_list:
+                            print(k,end=' ')
+                        print()
+                    except Exception:
+                        pass
 
 if __name__ == "__main__" :
     main()
