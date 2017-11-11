@@ -24,3 +24,9 @@ cat /media/data/pubchem/Data/0001001_0002000/1032.csv | cut -d, -f3 > CIDS_ASSAY
 ```
 
 This file can be uploaded to (PubChem)[https://pubchem.ncbi.nlm.nih.gov/pc_fetch/pc_fetch.cgi]
+
+Best in class found at:
+https://arxiv.org/abs/1603.00856
+
+
+
