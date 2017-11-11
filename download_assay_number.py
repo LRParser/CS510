@@ -16,7 +16,6 @@ def cidToSmiles(cid):
 
 
 def aidToCsvFile(aid):
-
 	result = getResponse("https://pubchem.ncbi.nlm.nih.gov/rest/pug/assay/aid/%s/CSV" % aid)
 
 	if not result:
@@ -32,11 +31,14 @@ def aidToCsvFile(aid):
 def main():
 	if len(sys.argv) < 2:
 		print "Please enter an Assay number."
-		sys.exit(1)
+		return -1
 
 	aid = sys.argv[1]
 	if aidToCsvFile(aid) == -1:
 		print "No results were returned for aid %s." % aid
+		return -1
+	
+	return 0
 
 
 if __name__ == "__main__":
