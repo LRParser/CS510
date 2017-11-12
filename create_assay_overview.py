@@ -106,7 +106,7 @@ def main():
     smiles_list = root_df.loc[cid_ref_list,"SMILES"]
 
     full_df["mol_id"] = pd.Series(data=cid_ref_list,dtype=int)
-    full_df["smiles"] = pd.Series(data=smiles_list,dtype=String)
+    full_df["smiles"] = pd.Series(data=smiles_list,dtype=str)
 
     print(full_df.head())
 
