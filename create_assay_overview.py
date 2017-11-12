@@ -1,23 +1,12 @@
 import pandas as pd
 import os
-import functools
-import psycopg2
-import dask
-import dask.dataframe as dd
 import numpy as np
 
 def main():
-    #dask.set_options(get=dask.async.get_sync)
 
-    print("Loading SMILES/CIDs from reference CSV")
-
-    #root_df = pd.read_csv("/media/data/pubchem/summary.csv",index_col="PUBCHEM_CID")
-    #root_df = dd.from_pandas(root_df,npartitions=20)
     root_path = "/media/data/pubchem/Data"
 
     root_df = None
-
-    df_list = list()
 
     cid_set = set()
 
@@ -26,11 +15,6 @@ def main():
     i = 0
 
     print("Total assays: {0}".format(len(names_to_parse)))
-
-    #con = psycopg2.connect("")
-    #cur = con.cursor()
-
-    full_df = None
 
     for path, dirs, filenames in os.walk(root_path) :
         for dir in dirs:
@@ -63,6 +47,11 @@ def main():
     j = 0
     print("CID length is: {0}".format(len(cid_set)))
 
+    cid_ref_list = list(cid_set)
+    full_df = pd.DataFrame()
+
+
+
     for path, dirs, filenames in os.walk(root_path) :
         for dir in dirs:
 
@@ -90,31 +79,20 @@ def main():
 
                     df.set_index("PUBCHEM_CID")
 
-                    cid_list = list()
                     outcomes = list()
 
-                    for cid in cid_set :
-
-                        cid_list.append(cid)
+                    for cid in cid_ref_list :
 
                         if cid in df["PUBCHEM_CID"]:
 
-                            outcomes.append(df.loc[cid,assay_name])
+                            outcomes.append(int(df.loc[cid,assay_name]))
                             continue
                         else :
                             outcomes.append(np.nan)
 
-                    if(full_df is None) :
-                        print("Series lengths")
-                        print(len(cid_list))
-                        print(len(outcomes))
-                        full_df = pd.DataFrame({"mol_ids" : cid_list, assay_name : outcomes})
-                    else :
-                        s = pd.Series(name=assay_name, data=outcomes, dtype=np.float32)
-                        full_df[assay_name] = s
-                        #full_df = pd.concat([full_df,s],axis=1)
 
-
+                    s = pd.Series(data=outcomes,dtype=float)
+                    full_df[assay_name] = s
 
                     #full_df = full_df.to_sparse()
 
@@ -123,7 +101,16 @@ def main():
                     print("Assays merged: {0}".format(j))
 
 
-    full_df.to_csv("/media/data/pubchem/assay_final.csv")
+    print("Loading SMILES/CIDs from reference CSV")
+    root_df = pd.read_csv("/media/data/pubchem/summary.csv",index_col="PUBCHEM_CID")
+    smiles_list = root_df.loc[cid_ref_list,"SMILES"]
+
+    full_df["mol_id"] = pd.Series(data=cid_ref_list,dtype=int)
+    full_df["smiles"] = pd.Series(data=smiles_list,dtype=String)
+
+    print(full_df.head())
+
+    full_df.to_csv("/tmp/pcba.csv.gz",index=False,compression='gzip')
 
 
 if __name__ == "__main__" :
