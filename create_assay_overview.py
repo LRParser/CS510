@@ -103,7 +103,7 @@ def main():
 
     print("Loading SMILES/CIDs from reference CSV")
     root_df = pd.read_csv("/media/data/pubchem/summary.csv",index_col="PUBCHEM_CID")
-    smiles_list = root_df.loc[cid_ref_list,"SMILES"]
+    smiles_list = root_df.loc[cid_ref_list,"SMILES"].values
 
     full_df["mol_id"] = pd.Series(data=cid_ref_list,dtype=int)
     full_df["smiles"] = pd.Series(data=smiles_list,dtype=str)
