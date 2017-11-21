@@ -3,6 +3,7 @@ import os
 from rdkit import Chem
 import time
 import gzip
+import pickle
 
 def main() :
     print("Processing PubChem FTP Download")
@@ -21,6 +22,9 @@ def main() :
     processed_files = os.listdir(results_path)
     processed_files.append("Compound_102125001_102150000_smiles.csv")
 
+    keys = list()
+    values = list()
+
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
@@ -35,8 +39,8 @@ def main() :
                 i = i + 1
                 continue
 
-            keys = list()
-            values = list()
+            #keys = list()
+            #values = list()
 
             start = time.time()
             filepath = os.path.join(sdf_root_path,filename)
@@ -58,26 +62,32 @@ def main() :
                 print("Processed file number: {0} in {1} seconds".format(i, end - start))
                 i = i + 1
 
-                df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values},index=keys)
-                df.to_csv(new_file_name,index=False)
+                #df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values},index=keys)
+                #df.to_csv(new_file_name,index=False)
 
 
+
+    keys_values_dict = zip(keys,values)
+    pickle_path = "data.smiles.pickle"
+    with open(pickle_path, 'wb') as f:
+        pickle.dump(keys_values_dict, f, pickle.HIGHEST_PROTOCOL)
+    print("Wrote CID info to pickle")
 
     # Now parse all results smile files into one big file
-    df_list = list()
-    processed_files = os.listdir(results_path)
-    for filename in processed_files :
-        print("Processing: {} for summary CSV".format(filename))
-        df = pd.read_csv(os.path.join(results_path,filename))
-        df_list.append(df)
+    #df_list = list()
+    #processed_files = os.listdir(results_path)
+    #for filename in processed_files :
+    #    print("Processing: {} for summary CSV".format(filename))
+    #    df = pd.read_csv(os.path.join(results_path,filename))
+    #    df_list.append(df)
 
-    df_full = pd.concat(df_list)
+    #df_full = pd.concat(df_list)
 
 
-    print("Writing out summary CSV")
-    df_full.to_csv("/media/data/pubchem/summary.csv",index=False)
+    #print("Writing out summary CSV")
+    #df_full.to_csv("/media/data/pubchem/summary.csv",index=False)
 
-    print("Stored data as CSV")
+    #print("Stored data as CSV")
 
 
 
