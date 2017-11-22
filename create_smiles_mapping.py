@@ -50,7 +50,8 @@ def main() :
                 for mol in suppl:
                     if mol is None: continue
                     cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
-                    smiles = mol.GetProp("PUBCHEM_OPENEYE_ISO_SMILES")
+                    Chem.Kekulize(m)
+                    smiles = Chem.MolToSmiles(mol,kekuleSmiles=True)
                     if len(smiles) > max_smiles_len:
                         i = i + 1
                         print("Skipped compound: {0} due to large size".format(cid))
