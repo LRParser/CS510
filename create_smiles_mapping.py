@@ -20,24 +20,26 @@ def main() :
     max_smiles_len = 200
 
     processed_files = os.listdir(results_path)
-    processed_files.append("Compound_102125001_102150000_smiles.csv")
+    #processed_files.append("Compound_102125001_102150000_smiles.csv")
 
     keys = list()
     values = list()
+
+    overall_start = time.time()
 
     for path, dirs, filenames in os.walk(sdf_root_path) :
         for filename in filenames:
 
             print("Processing: {0}".format(filename))
 
-            expected_file_name = filename.replace(".sdf.gz", "_smiles.csv")
-            new_file_name = os.path.join(results_path,expected_file_name)
+            #expected_file_name = filename.replace(".sdf.gz", "_smiles.csv")
+            #new_file_name = os.path.join(results_path,expected_file_name)
 
 
-            if expected_file_name in processed_files:
-                print("Skipping: {0}".format(new_file_name))
-                i = i + 1
-                continue
+            #if expected_file_name in processed_files:
+            #    print("Skipping: {0}".format(new_file_name))
+            #    i = i + 1
+            #    continue
 
             #keys = list()
             #values = list()
@@ -50,14 +52,18 @@ def main() :
                 for mol in suppl:
                     if mol is None: continue
                     cid = mol.GetProp("PUBCHEM_COMPOUND_CID")
-                    Chem.Kekulize(m)
-                    smiles = Chem.MolToSmiles(mol,kekuleSmiles=True)
-                    if len(smiles) > max_smiles_len:
-                        i = i + 1
-                        print("Skipped compound: {0} due to large size".format(cid))
+                    try :
+                        Chem.Kekulize(mol)
+                        smiles = Chem.MolToSmiles(mol,kekuleSmiles=True)
+                        if len(smiles) > max_smiles_len:
+                            i = i + 1
+                            #print("Skipped compound: {0} due to large size".format(cid))
+                            continue
+                        keys.append(int(cid))
+                        values.append(smiles)
+                    except Exception as e:
+                        print(e)
                         continue
-                    keys.append(int(cid))
-                    values.append(smiles)
                 end = time.time()
 
                 print("Processed file number: {0} in {1} seconds".format(i, end - start))
@@ -68,11 +74,16 @@ def main() :
 
 
 
-    keys_values_dict = zip(keys,values)
-    pickle_path = "data.smiles.pickle"
-    with open(pickle_path, 'wb') as f:
-        pickle.dump(keys_values_dict, f, pickle.HIGHEST_PROTOCOL)
-    print("Wrote CID info to pickle")
+
+    df = pd.DataFrame({"PUBCHEM_CID" : keys, "SMILES" : values})
+    df = df.set_index("PUBCHEM_CID")
+    df.to_csv("/media/data/pubchem/summary.csv")
+
+    print("Wrote CID info to CSV")
+
+    overall_end = time.time()
+    secs_elapsed = overall_end - overall_start
+    print("Parsed all smiles in: {0} seconds, or {1} minutes, or {2} hours".format(secs_elapsed,secs_elapsed/60,secs_elapsed/3600))
 
     # Now parse all results smile files into one big file
     #df_list = list()
