@@ -25,6 +25,7 @@ def main() :
 
     keys = list()
     values = list()
+    write_dict = False
     overall_start = time.time()
 
     with open("/media/data/pubchem/summary.csv","w") as f:
@@ -106,12 +107,16 @@ def main() :
 
         #print("Stored data as CSV")
 
-    print("Saved file, now saving pickle")
+    if write_dict:
+        print("Saved file, now saving pickle")
 
-    mydict = sorted(dict(zip(keys,values)))
-    with open("/media/data/pubchem/kekulesmiles.pickle","wb") as f:
-        pickle.dump(mydict,f)
+        mydict = sorted(dict(zip(keys,values)))
+        with open("/media/data/pubchem/kekulesmiles.pickle","wb") as f:
+            pickle.dump(mydict,f)
 
+    else :
+        with open("/media/data/pubchem/kekulesmiles_tuple.pickle","wb") as f:
+            pickle.dump((keys,values),f)
     print("Done")
 
 if __name__ == '__main__':
