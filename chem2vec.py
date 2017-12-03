@@ -19,7 +19,7 @@ def main() :
 
             i = i + 1
 
-            if(i >= max_num) :
+            if i >= max_num :
                 break
 
 
@@ -44,6 +44,7 @@ def main() :
                         print()
                     except Exception:
                         pass
+    print("Total parsed is: {0}".format(i))
 
 if __name__ == "__main__" :
     main()
