@@ -2,8 +2,19 @@ import pandas as pd
 import os
 import pickle
 import array
+from bisect import bisect_left
 
 root_path = "/media/data/pubchem/Data"
+
+
+
+
+
+def binary_search(a, x, lo=0, hi=None):  # can't use a to specify default for hi
+    hi = hi if hi is not None else len(a)  # hi defaults to len(a)
+    pos = bisect_left(a, x, lo, hi)  # find insertion position
+    return (pos if pos != hi and a[pos] == x else -1)  # don't walk off the end
+
 
 
 def create_cid_list(assays_to_parse) :
@@ -141,8 +152,8 @@ def main():
 
     print("Reading in smiles info")
 
-    with open("/media/data/pubchem/kekulesmiles.pickle","rb") as f:
-        cid_dict = pickle.load(f)
+    with open("/media/data/pubchem/kekulesmiles_tuple.pickle","rb") as f:
+        keys, values = pickle.load(f)
 
 
     for i in range(0,cid_len) :
@@ -151,11 +162,13 @@ def main():
         line_for_comp = "CID"+str(cid)
         # printing the SMILES
 
-        if cid not in cid_dict:
+        cid_pos = binary_search(keys,cid)
+
+        if cid_pos == -1:
             continue
             #raise Exception("CID {0} not in smiles dict".format(cid))
 
-        line_for_comp += ","+str(cid_dict[cid])
+        line_for_comp += ","+str(values[cid_pos])
         for j in range(0,assay_results_len) :
             val = assay_results[j][i]
             if val == -1:
